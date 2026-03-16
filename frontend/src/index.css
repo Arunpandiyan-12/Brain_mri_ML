@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: #030712;
+  color: #e2e8f0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.2); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,229,255,0.4); }
+
+/* Range input */
+input[type="range"] {
+  -webkit-appearance: none;
+  background: rgba(255,255,255,0.06);
+  border-radius: 9999px;
+  height: 6px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e5ff;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,229,255,0.5);
+}
+
+/* Select arrow fix */
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 28px !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Focus glow for inputs */
+input:focus, select:focus {
+  box-shadow: 0 0 0 2px rgba(0,229,255,0.15) !important;
+  border-color: rgba(0,229,255,0.5) !important;
+}
+
+/* Recharts override */
+.recharts-default-tooltip {
+  background: #0d1f38 !important;
+  border: 1px solid rgba(0,229,255,0.2) !important;
+  border-radius: 8px !important;
+}
