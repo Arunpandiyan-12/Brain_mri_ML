@@ -6,36 +6,7 @@
 ## 🏗 Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         FRONTEND (React)                        │
-│  Login → Upload MRI → Patient Form → Analyze → Results/Queue   │
-└────────────────────────────┬────────────────────────────────────┘
-                             │ HTTP (JWT Bearer)
-┌────────────────────────────▼────────────────────────────────────┐
-│                       FASTAPI BACKEND                           │
-│                                                                 │
-│  /auth  →  JWT auth (register/login)                           │
-│  /cases →  CRUD for patient cases                              │
-│  /scan  →  Upload MRI + trigger inference + serve heatmaps     │
-│  /queue →  Priority queue + stats                              │
-└────────────────────────────┬────────────────────────────────────┘
-              ┌──────────────┴───────────────┐
-              ▼                              ▼
-┌─────────────────────┐          ┌─────────────────────────┐
-│    ML Pipeline      │          │     SQLite Database      │
-│                     │          │                         │
-│  EfficientNet-B3    │          │  users                  │
-│  + ClinicalEncoder  │          │  scan_cases             │
-│  + AttentionFusion  │          │  scan_results           │
-│  + Grad-CAM++       │          └─────────────────────────┘
-│  + UrgencyScorer    │
-│  → 4-class probs    │
-│  → urgency RED/Y/G  │
-│  → heatmap overlay  │
-└─────────────────────┘
-```
 
----
 
 ## 🚀 Quick Start (Local Development)
 
@@ -183,23 +154,6 @@ score < 0.35 → GREEN  (Routine review)
 
 ---
 
-## 📊 Evaluation Metrics (Clinical Deployment)
-
-| Metric | Why It Matters |
-|--------|---------------|
-| Sensitivity (Recall) | Must not miss tumors (patient safety) |
-| Specificity | Avoid unnecessary procedures |
-| AUC-ROC | Overall discriminative power |
-| Expected Calibration Error (ECE) | Probability reliability |
-| Cohen's Kappa | Inter-rater agreement proxy |
-| F1 (macro) | Balanced across imbalanced classes |
-| Inference latency (p95) | Clinical workflow SLA |
-
-**Target for deployment:**
-- Sensitivity (glioma) ≥ 95%
-- Specificity ≥ 90%
-- ECE ≤ 0.05 (well calibrated)
-- Latency ≤ 500ms p95
 
 ---
 
@@ -238,43 +192,6 @@ score < 0.35 → GREEN  (Routine review)
 
 ---
 
-## 🎨 UI Color Palette
 
-```
-Background:   #030712  (near-black navy)
-Surface:      #0d1f38  (card background)
-Border:       rgba(0,229,255,0.1)
-Cyan accent:  #00e5ff  (primary actions)
-Red critical: #ff4444  (urgency RED)
-Yellow warn:  #ffaa00  (urgency YELLOW)
-Green safe:   #00e676  (urgency GREEN)
-Text primary: #e2e8f0
-Text muted:   #64748b
-Font display: Exo 2
-Font body:    DM Sans
-Font mono:    JetBrains Mono
-```
 
----
 
-## 🔐 Security Notes
-- JWT tokens expire in 8 hours
-- bcrypt password hashing
-- CORS restricted in production
-- All endpoints require authentication except /auth/*
-- File upload validates extension and size
-
----
-
-## 📈 Beyond Grad-CAM: Future Improvements
-
-1. **SHAP DeepExplainer** — game-theoretic feature attribution
-2. **ScoreCAM** — perturbation-based, no gradient required
-3. **Concept Activation Vectors (TCAV)** — human-interpretable concepts
-4. **Uncertainty quantification** — Monte Carlo Dropout (epistemic) + temperature calibration (aleatoric)
-5. **Ensemble disagreement** — 5-model ensemble with disagreement score
-6. **LIME** — local interpretable model-agnostic explanations
-
----
-
-*Built for Final Year ML Project · Department of Computer Science*
