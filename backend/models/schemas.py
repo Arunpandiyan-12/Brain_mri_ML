@@ -25,7 +25,6 @@ class Token(BaseModel):
 
 # ── Case ──────────────────────────────────────────────────────────────────────
 class CaseCreate(BaseModel):
-    case_id:           str
     patient_name:      str
     age:               int = Field(..., ge=0, le=120)
     gender:            Optional[str] = None
