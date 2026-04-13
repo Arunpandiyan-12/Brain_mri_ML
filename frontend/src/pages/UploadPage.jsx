@@ -23,14 +23,13 @@ export default function UploadPage() {
   const [preview,     setPreview]     = useState(null);
   const [existingPatients, setExistingPatients] = useState([]);
   const [form, setForm] = useState({
-    case_id:           `CASE-${Date.now().toString(36).toUpperCase()}`,
-    patient_name:      "",
-    age:               "",
-    gender:            "Male",
-    headache_severity: 0,
-    history_seizures:  false,
-    er_admission:      false,
-  });
+  patient_name: "",
+  age: "",
+  gender: "Male",
+  headache_severity: 0,
+  history_seizures: false,
+  er_admission: false,
+});
   const [step,        setStep]        = useState("idle");
   const [result,      setResult]      = useState(null);
   const pollRef = useRef(null);
@@ -59,15 +58,14 @@ export default function UploadPage() {
     if (!caseId) return;
     const patient = existingPatients.find(p => p.case_id === caseId);
     if (patient) {
-      setForm(f => ({
-        ...f,
-        case_id:          patient.case_id,
-        patient_name:     patient.patient_name,
-        age:              patient.age,
-        gender:           patient.gender,
-        history_seizures: patient.history_seizures ?? false,
-        headache_severity: patient.headache_severity ?? 0,
-      }));
+     setForm(f => ({
+  ...f,
+  patient_name: patient.patient_name,
+  age: patient.age,
+  gender: patient.gender,
+  history_seizures: patient.history_seizures ?? false,
+  headache_severity: patient.headache_severity ?? 0,
+}));
     }
   };
 
@@ -83,10 +81,13 @@ export default function UploadPage() {
       setStep("uploading");
 
       const { data: caseData } = await casesAPI.create({
-        ...form,
-        age:               parseInt(form.age),
-        headache_severity: parseInt(form.headache_severity),
-      });
+      patient_name: form.patient_name,
+      age: parseInt(form.age),
+      gender: form.gender,
+      headache_severity: parseInt(form.headache_severity),
+      history_seizures: form.history_seizures,
+      er_admission: form.er_admission,
+     });
 
       const fd = new FormData();
       fd.append("file", file);
@@ -170,7 +171,7 @@ export default function UploadPage() {
                 <button
                   onClick={() => setForm(f => ({
                     ...f,
-                    case_id: `CASE-${Date.now().toString(36).toUpperCase()}`,
+                   
                     patient_name: "", age: "", gender: "Male",
                     headache_severity: 0, history_seizures: false, er_admission: false,
                   }))}
@@ -188,14 +189,6 @@ export default function UploadPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Case ID">
-                <input
-                  value={form.case_id}
-                  readOnly
-                  className="w-full px-3 py-2 text-xs text-slate-500 font-mono outline-none cursor-default"
-                  style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)" }}
-                />
-              </Field>
               <Field label="Patient Name">
                 <input
                   value={form.patient_name}

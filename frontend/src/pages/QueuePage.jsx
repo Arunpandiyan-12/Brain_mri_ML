@@ -11,7 +11,7 @@ const SEVERITY_BADGE = {
 
 const URGENCY_TO_SEVERITY = {
   RED:    "SEVERE",
-  YELLOW: "HIGH",
+  YELLOW: "MODERATE",
   GREEN:  "LOW",
 };
 
