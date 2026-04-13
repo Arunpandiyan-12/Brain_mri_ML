@@ -77,7 +77,7 @@ Multimodal deep learning system for:
 # ── CORS ─────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # restrict in production
+    allow_origins=["*","https://brain-mri-ml.vercel.app"],   # restrict in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
